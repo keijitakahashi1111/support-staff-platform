@@ -18,6 +18,10 @@ from support_staff_app import db_utils, calendar_utils, whisper_utils
 from support_staff_app import scenarios as rp_scenarios
 from support_staff_app import company_rules
 from support_staff_app import notebooklm_helper
+from support_staff_app import models
+
+# Initialize database (creates tables + demo data if not exists)
+models.init_db()
 
 # Page Config
 st.set_page_config(page_title="支援員成長プラットフォーム", layout="wide")
