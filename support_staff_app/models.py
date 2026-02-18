@@ -688,6 +688,22 @@ def seed_data():
         c.executemany("INSERT INTO monthly_office_targets (year, month, office_name, target, actual, gap, achievement_rate) VALUES (?, ?, ?, ?, ?, ?, ?)", targets)
         conn.commit()
     
+    # Seed offices if empty
+    c.execute("SELECT count(*) FROM offices")
+    if c.fetchone()[0] == 0:
+        print("Seeding offices...")
+        offices = [
+            ('A事業所', '1234567890', '141003', '東京都品川区1-1-1', '03-1234-5678', '就労移行支援', 20, 1),
+        ]
+        c.executemany('''INSERT INTO offices (name, office_number, city_code, address, phone, service_type, capacity, is_active) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)''', offices)
+        conn.commit()
+
+    # Assign office_id to staff and clients if not set
+    c.execute("UPDATE staff SET office_id = 1 WHERE office_id IS NULL")
+    c.execute("UPDATE clients SET office_id = 1 WHERE office_id IS NULL")
+    conn.commit()
+    
     conn.close()
 
 if __name__ == "__main__":

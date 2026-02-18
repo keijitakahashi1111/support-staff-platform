@@ -22,6 +22,7 @@ from support_staff_app import models
 
 # Initialize database (creates tables + demo data if not exists)
 models.init_db()
+models.seed_data()
 
 # Page Config
 st.set_page_config(page_title="支援員成長プラットフォーム", layout="wide")
