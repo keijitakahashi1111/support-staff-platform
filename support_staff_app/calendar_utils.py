@@ -1,9 +1,15 @@
 import datetime
 import os.path
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
-from googleapiclient.discovery import build
+
+# Google Calendar APIs - optional, may not be available on all deployments
+try:
+    from google.auth.transport.requests import Request
+    from google.oauth2.credentials import Credentials
+    from google_auth_oauthlib.flow import InstalledAppFlow
+    from googleapiclient.discovery import build
+    CALENDAR_AVAILABLE = True
+except ImportError:
+    CALENDAR_AVAILABLE = False
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/calendar']
@@ -11,17 +17,16 @@ TOKEN_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file
 CREDS_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'credentials.json')
 
 def get_calendar_service():
+    if not CALENDAR_AVAILABLE:
+        raise RuntimeError("Google Calendar APIがインストールされていません。pip install google-api-python-client google-auth-oauthlib を実行してください。")
     creds = None
     if os.path.exists(TOKEN_PATH):
         creds = Credentials.from_authorized_user_file(TOKEN_PATH, SCOPES)
     
-    # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            # Note: In a headless Streamlit env, this interactive flow might be tricky if token is missing.
-            # We assume token.json is present from previous steps.
             flow = InstalledAppFlow.from_client_secrets_file(CREDS_PATH, SCOPES)
             creds = flow.run_local_server(port=0)
         with open(TOKEN_PATH, 'w') as token:
