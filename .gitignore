@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+venv/
+.venv/
+*.egg-info/
+
+# Environment & secrets
+.env
+credentials.json
+token.json
+token_*.json
+maps_api_key.txt
+
+# Database (Streamlit Cloud uses ephemeral storage; DB is auto-created)
+*.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Unrelated files
+*.pdf
+*.pptx
+extracted_images/
+calendar_fetch.py
+convert_to_pptx*.py
+deliver_proposals.py
+delivery_auth.py
+drive_*.py
+extract_*.py
+gmail_automation.py
+reference_text.txt
+run_*.sh
+smart_calendar.py
+specific_reference_text.txt
+upload_memo.py
+proposal_*.md
+
+# Antigravity internal
+.gemini/
